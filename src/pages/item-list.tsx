@@ -1,6 +1,6 @@
 import type React from "react";
 import { useEffect, useMemo, useState } from "react";
-import { Button } from "@/components";
+import { Button, Loading } from "@/components";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -22,11 +22,11 @@ import type { FilterType, StatusType } from "@/types";
 import { useItems } from "@/hooks/use-items";
 
 export const ItemList: React.FC = () => {
-  const { data: items } = useItems();
+  const { data: items, isLoading } = useItems();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<FilterType>("All");
-  const [statusFilter, setStatusFilter] = useState<StatusType>("All");
+  const [statusFilter, setStatusFilter] = useState<StatusType>("Active");
   const [showFilters, setShowFilters] = useState(false);
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
 
@@ -129,7 +129,14 @@ export const ItemList: React.FC = () => {
         </div>
 
         <div className="space-y-4">
-          {filteredItems.length === 0 ? (
+          {isLoading ? (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
+              <Loading />
+               <h3 className="text-lg font-medium text-slate-900 mb-2">
+                Loading...
+              </h3>
+            </div>
+          ) : filteredItems.length === 0 ? (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
               <Search className="h-12 w-12 text-slate-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-slate-900 mb-2">
