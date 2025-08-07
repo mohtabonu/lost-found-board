@@ -1,5 +1,5 @@
 import type React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Button, Loading } from "@/components";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,9 +20,13 @@ import {
 } from "lucide-react";
 import type { FilterType, StatusType } from "@/types";
 import { useItems } from "@/hooks/use-items";
+import { AuthContext } from "@/context";
+import { useMarkAsDone } from "@/hooks/use-mark-as-done";
 
 export const ItemList: React.FC = () => {
   const { data: items, isLoading } = useItems();
+  const {user} = useContext(AuthContext)
+  const {mutate: markAsDone} = useMarkAsDone()
 
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState<FilterType>("All");
@@ -132,7 +136,7 @@ export const ItemList: React.FC = () => {
           {isLoading ? (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
               <Loading />
-               <h3 className="text-lg font-medium text-slate-900 mb-2">
+              <h3 className="text-lg font-medium text-slate-900 mb-2">
                 Loading...
               </h3>
             </div>
@@ -213,6 +217,13 @@ export const ItemList: React.FC = () => {
                             </span>
                           </div>
                         </div>
+                        {item.status === "Active" && item.userId === user?.id && (
+                          <Button
+                            onClick={() => markAsDone(item.id)}
+                          >
+                            <Check className="h-4 w-4" />
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>

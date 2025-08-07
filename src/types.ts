@@ -1,5 +1,6 @@
 export interface Item {
   id: string;
+  userId: string;
   imageUrl: string;
   itemName: string;
   location: string;
@@ -14,7 +15,7 @@ export type StatusType = "All" | "Active" | "Done";
 
 export interface User {
   username: string;
-  email:  string;
+  email: string;
   password: string;
   id: string;
 }
