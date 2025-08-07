@@ -1,5 +1,5 @@
 import type React from "react";
-import { Plus, X, Package} from "lucide-react";
+import { Plus, X, Package, UserRound } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui";
 
@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-white shadow-sm border-b border-slate-200">
+    <header className="bg-white shadow-sm border-b border-slate-200 relative ">
       <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div
@@ -47,7 +47,9 @@ export const Header: React.FC = () => {
                 </>
               )}
             </Button>
-           
+            <div className="border-2 border-black rounded-full p-[6px] hover:bg-black/6 cursor-pointer" onClick={() => navigate('/profile')}>
+              <UserRound />
+            </div>
           </div>
         </div>
       </div>
