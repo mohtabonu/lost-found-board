@@ -10,7 +10,8 @@ export const useCreateItem = () => {
 
   return useMutation({
     mutationFn: async (newItem: Omit<Item, "id" | "createdAt">) => {
-      const itemWithUser = { ...newItem, userId: user?.id };
+      if (!user?.id) throw new Error("User is not logged in");
+      const itemWithUser = { ...newItem, userId: user.id };
       const response = await http.post("/items", itemWithUser);
       return response.data as Item;
     },
