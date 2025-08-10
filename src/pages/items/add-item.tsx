@@ -27,6 +27,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useCreateItem } from "@/hooks/use-create-item";
+import { useContext } from "react";
+import { AuthContext } from "@/context";
 
 const formSchema = z.object({
   itemName: z.string().min(1, "Item name is required").trim(),
@@ -44,6 +46,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const AddItem: React.FC = () => {
   const createItem = useCreateItem();
+  const {user} = useContext(AuthContext)
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -53,12 +56,12 @@ export const AddItem: React.FC = () => {
       location: "",
       date: "",
       type: "Lost",
-      status: "Active",
+      status: "Active",  
     },
   });
 
   const onSubmit = (data: FormData) => {
-     createItem.mutate(data, {
+     createItem.mutate({...data, userId: user?.id || ''}, {
       onSuccess: () => {
         alert("Item created successfully");
         form.reset();
